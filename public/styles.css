@@ -1,0 +1,142 @@
+*, *::before, *::after {
+    font-family: 'Open Sans', sans-serif;
+  }
+  
+  .cardd-grid {
+    padding-top: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  
+  .cardd {
+    --padding: 1rem;
+    background: white;
+    border: 1px solid #777;
+    border-radius: .5rem;
+    overflow: hidden;
+  }
+  
+  .cardd.cardd-shadow {
+    border: none;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .2);
+  }
+  
+  .cardd-header {
+    font-size: 1.5rem;
+    padding: var(--padding);
+    padding-bottom: 0;
+    margin-bottom: .5rem;
+  }
+  
+  .cardd-header.cardd-image {
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  .cardd-header.cardd-image > img {
+    display: block;
+    width: 100%;
+    height: 400px;
+    /* max-height: 200px; */
+    aspect-ratio: 9 / 16;
+    object-fit: contain;
+    object-position: center;
+    transition: 200ms transform ease-in-out;
+  }
+  
+  .cardd:hover > .cardd-header.cardd-image > img {
+    transform: scale(1.025);
+  }
+  
+  .cardd-body {
+    font-size: .9rem;
+    padding: 0 var(--padding);
+  }
+  
+  .cardd-footer {
+    background-color: white;
+    margin-top: 1rem;
+    padding: var(--padding);
+    padding-top: 0;
+  }
+  
+  .btnn {
+    --color: hsl(200, 50%, 50%);
+    background: var(--color);
+    color: white;
+    border: none;
+    font-size: 1rem;
+    padding: .5em .75em;
+    border-radius: .25em;
+    cursor: pointer;
+  }
+  
+  .btnn:hover, .btnn:focus {
+    background: hsl(200, 50%, 60%);
+  }
+  
+  .btnn.btnn-outline {
+    background: none;
+    border: 1px solid var(--color);
+    color: var(--color);
+  }
+  
+  .btnn.btnn-outline:hover, .btnn.btnn-outline:focus {
+    background: hsl(200, 50%, 90%);
+  }
+  
+  .btnn + .btnn {
+    margin-left: .25rem;
+  }
+
+  .paggination{
+    text-align: center;
+    margin: 30px 30px 60px;
+    user-select: none;
+  }
+
+  .paggination li{
+    display: inline-block;
+    margin: 5px;
+    box-shadow: 0 5px 25px rgb(1 1 1 / 10%);
+  }
+
+  .paggination li a{
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.2em;
+    line-height: 45px;
+  }
+
+  .previous-page, .next-page{
+    text-align: center;
+    background: #0AB1CE;
+    width: 80px;
+    border-radius: 45px;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+
+  .previous-page:hover{
+    transform: translate(-5px);
+  }
+
+  .current-page, .dots{
+    text-align: center;
+    background: rgb(182, 176, 176);
+    width: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .active{
+    background: #0AB1CE;
+  }
+
+  .disable{
+    background: #ccc;
+  }

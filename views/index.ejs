@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <title>Library Management</title>
+
+</head>
+<body>
+    <nav id="mainNavbar" class="navbar navbar-expand-lg navbar-dark bg-danger">
+        <div class="container">
+            <a class="navbar-brand" href="/">Books</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li id="login" class="nav-item">
+                  <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li id="register" class="nav-item">
+                  <a class="nav-link" href="/register">Sign Up</a>
+                </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+    <div class="container col-4 mt-3">
+        <label for="search">Search Books:</label>
+        <input class="form-control mb-5 p-3" type="text" name="search" id="search" onkeyup="searchBook()    " placeholder="Enter author/title...">
+    </div>
+
+
+
+    <div class="cardd-grid" id="card-lists">
+        <% for(var i = 0; i < books.length;i++) { %>
+        <div class="cardd cardd-shadow">
+            <div class="cardd-header cardd-image">
+                <img src="<%= books[i].imageLink %>" alt="">
+            </div>
+            <div class="cardd-body">
+                <p class="text-center book-title"><%= books[i].title %></p>
+                <p class="book-author">Author: <i><%= books[i].author %></i></p>
+                <p class="book-language">Language: <i><%= books[i].language %></i></p>
+                <p class="book-year">Year: <%= books[i].year %></p>
+            </div>
+            
+            <div class="cardd-footer">
+                <button class="btnn listt4">Details</button>
+                <button class="btnn listt5 btnn-outline">Request</button>
+            </div>
+        </div>
+        <% } %>
+    </div>
+
+    <div class="paggination">
+        <!-- <li class="pagge-item previous-page disable"><a class="pagge-link" href="#">Prev</a></li>
+        <li class="pagge-item current-page active"><a class="pagge-link" href="#">1</a></li>
+        <li class="pagge-item dots"><a class="pagge-link" href="#">...</a></li>
+        <li class="pagge-item current-page"><a class="pagge-link" href="#">5</a></li>
+        <li class="pagge-item current-page"><a class="pagge-link" href="#">6</a></li>
+        <li class="pagge-item dots"><a class="pagge-link" href="#">...</a></li>
+        <li class="pagge-item current-page"><a class="pagge-link" href="#">10</a></li>
+        <li class="pagge-item next-page"><a class="pagge-link" href="#">Next</a></li> -->
+    </div>
+</body>
+<script src="script.js"></script>
+<script type="text/javascript">
+    function getPageList(totalPages, page, maxLength){
+        function range(start, end){
+            return Array.from(Array(end-start+1), (_,i) => i+start);
+        }
+        
+        var sideWidth = maxLength < 9 ? 1 : 2;
+        var leftWidth = (maxLength - sideWidth * 2 - 3) >> 1;
+        var rightWidth = (maxLength - sideWidth * 2 - 3) >> 1;
+
+        if(totalPages <= maxLength){
+            return range(1, totalPages)
+        }
+
+        if(page <= maxLength - sideWidth - 1 - rightWidth){
+            return range(1, maxLength-sideWidth-1).concat(0, range(totalPages - sideWidth + 1, totalPages));
+        }
+
+        if(page >= maxLength - sideWidth - 1 - rightWidth){
+            return range(1, sideWidth).concat(0, range(totalPages - sideWidth - 1 - rightWidth - leftWidth, totalPages));
+        }
+
+        return range(1, sideWidth).concat(0, range(page - leftWidth, page + rightWidth), 0, range(totalPages - sideWidth + 1, totalPages));
+    }
+
+    $(function(){
+        var numberOfItems = $(".cardd-grid .cardd").length;
+        var limitPerPage = 4;
+        var totalPages = Math.ceil(numberOfItems / limitPerPage);
+        var paginationSize = 7;
+        var currentPage;
+
+        function showPage(whichPage){
+            if(whichPage < 1 || whichPage > totalPages) return false;
+
+            currentPage = whichPage;
+
+            $(".cardd-grid .cardd").hide().slice((currentPage - 1)* limitPerPage, currentPage * limitPerPage).show();
+
+            $(".paggination li").slice(1, -1).remove();
+
+            getPageList(totalPages, currentPage, paginationSize).forEach(item => {
+                $("<li>").addClass("pagge-item").addClass(item ? "current-page" : "dots")
+                    .toggleClass("active", item === currentPage).append($("<a>").addClass("pagge-link")
+                    .attr({href: "javascript:void(0)"}).text(item || "...")).insertBefore(".next-page");
+            });
+
+            $(".previous-page").toggleClass("disable", currentPage === 1);
+            $(".next-page").toggleClass("disable", currentPage === totalPages);
+            return true;
+        }
+
+        $(".paggination").append(
+            $("<li>").addClass("pagge-item").addClass("previous-page").append($("<a>").addClass("pagge-link")
+                .attr({href: "javascript:void(0)"}).text("Prev")),
+            $("<li>").addClass("pagge-item").addClass("next-page").append($("<a>").addClass("pagge-link")
+                .attr({href: "javascript:void(0)"}).text("Next"))
+        );
+
+        $(".cardd-shadow").show();
+        showPage(2);
+
+        $(document).on("click", ".paggination li.current-page:not(.active)", function(){
+            return showPage(+$(this).text());
+        });
+
+        $(".next-page").on("click", function(){
+            return showPage(currentPage + 1);
+        })
+
+        $(".previous-page").on("click", function(){
+            return showPage(currentPage - 1);
+        })
+    });
+</script>
+</html>
